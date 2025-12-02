@@ -2,16 +2,31 @@ import { Theme, THEMES, ThemeType } from './design-system';
 
 /**
  * Maps Gemini's theme_type output to our design system themes
+ * Handles various theme type formats from Gemini
  */
-export function mapGeminiThemeToDesignTheme(geminiTheme: 'medical' | 'legal' | 'industrial' | 'beauty'): Theme {
-    const mapping: Record<'medical' | 'legal' | 'industrial' | 'beauty', ThemeType> = {
-        medical: 'clinical',
-        legal: 'legal',
-        industrial: 'industrial',
-        beauty: 'luxury',
-    };
+export function mapGeminiThemeToDesignTheme(geminiTheme: string): Theme {
+    // Normalize the theme name
+    const normalized = geminiTheme?.toLowerCase().replace(/[_-]/g, '') || '';
 
-    return THEMES[mapping[geminiTheme]];
+    // Map various Gemini outputs to our themes
+    if (normalized.includes('medical') || normalized.includes('clinic') || normalized.includes('dental') || normalized.includes('doctor') || normalized.includes('health')) {
+        return THEMES.clinical;
+    }
+
+    if (normalized.includes('legal') || normalized.includes('law') || normalized.includes('avocat') || normalized.includes('notar')) {
+        return THEMES.legal;
+    }
+
+    if (normalized.includes('industrial') || normalized.includes('auto') || normalized.includes('repair') || normalized.includes('construct') || normalized.includes('tech')) {
+        return THEMES.industrial;
+    }
+
+    if (normalized.includes('beauty') || normalized.includes('salon') || normalized.includes('spa') || normalized.includes('luxury') || normalized.includes('fashion')) {
+        return THEMES.luxury;
+    }
+
+    // Default fallback
+    return THEMES.clinical;
 }
 
 /**
