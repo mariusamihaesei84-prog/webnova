@@ -47,7 +47,7 @@ export const generateLandingPage = action({
       const slug = args.nicheSlug || ("solutii/" + args.nicheName.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
 
       // SALVAREA OBLIGATORIE
-      await ctx.runMutation(internal.pages.saveGeneratedPage, {
+      await ctx.runMutation((internal as any).pages.saveGeneratedPage, {
         slug: slug,
         nicheName: args.nicheName,
         content: jsonContent
