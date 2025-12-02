@@ -3,10 +3,12 @@ import { v } from "convex/values";
 
 /**
  * WebNova.ro Database Schema
- * 
- * Two main tables:
+ *
+ * Tables:
  * 1. niches - Catalog of target industries
  * 2. generated_pages - AI-generated landing pages for each niche
+ * 3. indexing_logs - Google Indexing API logs
+ * 4. generation_jobs - Batch generation job tracking (CLI pipeline)
  */
 
 export default defineSchema({
@@ -60,5 +62,32 @@ export default defineSchema({
     created_at: v.number(),
   })
     .index("by_page", ["page_id"])
+    .index("by_status", ["status"]),
+
+  // Batch generation jobs (for CLI pipeline)
+  generation_jobs: defineTable({
+    status: v.union(
+      v.literal("pending"),
+      v.literal("in_progress"),
+      v.literal("completed"),
+      v.literal("failed")
+    ),
+    total_pages: v.number(),
+    completed_pages: v.number(),
+    failed_pages: v.number(),
+    niches_data: v.array(v.object({
+      businessType: v.string(),
+      painPoint: v.string(),
+      targetAudience: v.string(),
+    })),
+    results: v.optional(v.array(v.object({
+      slug: v.string(),
+      success: v.boolean(),
+      error: v.optional(v.string()),
+    }))),
+    started_at: v.optional(v.number()),
+    completed_at: v.optional(v.number()),
+    created_at: v.number(),
+  })
     .index("by_status", ["status"]),
 });

@@ -1,0 +1,52 @@
+[
+  {
+    "businessType": "cabinet stomatologic",
+    "painPoint": "Lipsa pacienților noi și dependența de recomandări tradiționale",
+    "targetAudience": "Proprietari de cabinete stomatologice din România"
+  },
+  {
+    "businessType": "cabinet veterinar",
+    "painPoint": "Lipsa vizibilității online și clienți care nu găsesc clinica",
+    "targetAudience": "Medici veterinari și proprietari de clinici veterinare"
+  },
+  {
+    "businessType": "salon înfrumusețare",
+    "painPoint": "Concurență mare și lipsa de programări online",
+    "targetAudience": "Proprietari de saloane de beauty și cosmetică"
+  },
+  {
+    "businessType": "birou arhitectură",
+    "painPoint": "Portofoliu invizibil online și lipsa de proiecte noi",
+    "targetAudience": "Arhitecți și birouri de proiectare"
+  },
+  {
+    "businessType": "service auto",
+    "painPoint": "Clienți care nu găsesc service-ul în căutări Google",
+    "targetAudience": "Proprietari de service-uri auto și ateliere"
+  },
+  {
+    "businessType": "restaurant",
+    "painPoint": "Lipsa comenzilor online și rezervărilor directe",
+    "targetAudience": "Proprietari de restaurante și localuri"
+  },
+  {
+    "businessType": "cabinet avocatură",
+    "painPoint": "Lipsa de clienți noi și dependența de recomandări",
+    "targetAudience": "Avocați și firme de avocatură"
+  },
+  {
+    "businessType": "agenție imobiliară",
+    "painPoint": "Listări invizibile și lipsa de lead-uri online",
+    "targetAudience": "Agenți imobiliari și agenții"
+  },
+  {
+    "businessType": "clinică medicală",
+    "painPoint": "Lipsa de programări online și vizibilitate locală",
+    "targetAudience": "Medici și administratori de clinici private"
+  },
+  {
+    "businessType": "firma contabilitate",
+    "painPoint": "Lipsa de clienți noi și vizibilitate în piață",
+    "targetAudience": "Contabili și firme de contabilitate"
+  }
+]
