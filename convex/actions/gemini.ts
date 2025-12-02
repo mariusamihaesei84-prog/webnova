@@ -4,6 +4,29 @@ import { internal } from "../_generated/api";
 import { v } from "convex/values";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
+// Transliterare diacritice românești → ASCII
+function transliterate(text: string): string {
+  const diacriticMap: Record<string, string> = {
+    'ă': 'a', 'Ă': 'A',
+    'â': 'a', 'Â': 'A',
+    'î': 'i', 'Î': 'I',
+    'ș': 's', 'Ș': 'S', 'ş': 's', 'Ş': 'S',
+    'ț': 't', 'Ț': 'T', 'ţ': 't', 'Ţ': 'T',
+  };
+  return text.replace(/[ăĂâÂîÎșȘşŞțȚţŢ]/g, char => diacriticMap[char] || char);
+}
+
+// Generare slug SEO-friendly
+function generateSlug(text: string): string {
+  return transliterate(text)
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')  // elimina caractere speciale
+    .replace(/\s+/g, '-')           // spații → cratime
+    .replace(/-+/g, '-')            // cratime multiple → una singură
+    .replace(/^-|-$/g, '');         // elimina cratime la început/sfârșit
+}
+
 export const generateLandingPage = action({
   args: {
     nicheName: v.string(),
@@ -24,7 +47,7 @@ export const generateLandingPage = action({
       Limba: Română cu diacritice.
       JSON STRICT (fara markdown):
       {
-        "theme_type": "medical", 
+        "theme_type": "medical",
         "image_prompt": "modern office interior 4k",
         "seo_title": "Titlu SEO",
         "seo_desc": "Descriere",
@@ -43,8 +66,8 @@ export const generateLandingPage = action({
       const result = await model.generateContent(systemPrompt);
       const jsonContent = JSON.parse(result.response.text());
 
-      // Generam slug simplu (fara prefix solutii/)
-      let slug = args.nicheSlug || args.nicheName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      // Generam slug cu transliterare corecta
+      const slug = args.nicheSlug || generateSlug(args.nicheName);
 
 
       // SALVAREA OBLIGATORIE
