@@ -7,12 +7,12 @@
     "build": "npx convex deploy --cmd 'next build'",
     "start": "next start",
     "lint": "eslint",
-    "pipeline:cli": "ts-node src/cli.ts",
-    "pipeline:generate": "ts-node src/cli.ts generate",
-    "pipeline:batch": "ts-node src/cli.ts batch",
-    "pipeline:sample": "ts-node src/templates/generate-sample.ts",
-    "pipeline:test:architect": "ts-node src/agents/architect/test.ts",
-    "pipeline:test:writer": "ts-node src/agents/writer/test.ts"
+    "pipeline:cli": "ts-node --project tsconfig.pipeline.json src/cli.ts",
+    "pipeline:generate": "ts-node --project tsconfig.pipeline.json src/cli.ts generate",
+    "pipeline:batch": "ts-node --project tsconfig.pipeline.json src/cli.ts batch",
+    "pipeline:sample": "ts-node --project tsconfig.pipeline.json src/templates/generate-sample.ts",
+    "pipeline:test:architect": "ts-node --project tsconfig.pipeline.json src/agents/architect/test.ts",
+    "pipeline:test:writer": "ts-node --project tsconfig.pipeline.json src/agents/writer/test.ts"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",

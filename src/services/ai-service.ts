@@ -39,14 +39,14 @@ export class AIService {
     this.config = {
       defaultTemperature: 0.7,
       defaultMaxTokens: 4096,
-      model: 'gemini-2.5-flash-preview-05-20',
+      model: 'gemini-2.0-flash',
       ...config,
     };
 
     if (config.provider === 'gemini' && config.apiKey) {
       this.geminiClient = new GoogleGenerativeAI(config.apiKey);
       this.geminiModel = this.geminiClient.getGenerativeModel({
-        model: this.config.model || 'gemini-2.5-flash-preview-05-20',
+        model: this.config.model || 'gemini-2.0-flash',
       });
     }
   }
@@ -94,13 +94,23 @@ export class AIService {
           generationConfig.responseMimeType = 'application/json';
         }
 
-        const result = await this.geminiModel.generateContent({
-          contents: [{ role: 'user', parts: [{ text: fullPrompt }] }],
-          generationConfig,
-        });
+        console.log('[Gemini] Sending prompt (first 200 chars):', fullPrompt.substring(0, 200));
+        console.log('[Gemini] Generation config:', JSON.stringify(generationConfig));
+
+        // Simple call like the test that worked
+        const result = await this.geminiModel.generateContent(fullPrompt);
 
         const response = result.response;
+
+        // Debug: Check for blocked responses
+        console.log('[Gemini] Candidates:', JSON.stringify(response.candidates?.map(c => ({
+          finishReason: c.finishReason,
+          safetyRatings: c.safetyRatings
+        }))));
+
         const content = response.text();
+        console.log('[Gemini] Response length:', content.length);
+        console.log('[Gemini] Response (first 300 chars):', content.substring(0, 300));
 
         return {
           content,

@@ -41,17 +41,20 @@ export async function generateComparisonTable(
     throw new Error('Comparison table must have exactly 3 headers');
   }
 
-  if (!tableData.rows || tableData.rows.length < 6 || tableData.rows.length > 8) {
-    console.warn(
-      `[Writer/Comparison] Table should have 6-8 rows, got ${tableData.rows?.length || 0}`
-    );
+  if (!tableData.rows || tableData.rows.length < 4) {
+    throw new Error(`Comparison table must have at least 4 rows, got ${tableData.rows?.length || 0}`);
   }
 
-  // Validate each row has 3 columns
-  const invalidRows = tableData.rows.filter((row) => row.length !== 3);
-  if (invalidRows.length > 0) {
-    throw new Error(`All rows must have 3 columns. Found ${invalidRows.length} invalid rows.`);
+  // Filter and fix rows - keep only valid 3-column rows
+  const validRows = tableData.rows.filter((row) => Array.isArray(row) && row.length === 3);
+
+  if (validRows.length < 4) {
+    console.error('[Writer/Comparison] Invalid rows received:', JSON.stringify(tableData.rows));
+    throw new Error(`Not enough valid rows. Need at least 4 rows with 3 columns each. Got ${validRows.length} valid rows.`);
   }
+
+  // Use only valid rows (up to 8)
+  tableData.rows = validRows.slice(0, 8);
 
   console.log('[Writer/Comparison] Comparison table generated successfully');
   console.log(`  - Headers: ${tableData.headers.join(' | ')}`);

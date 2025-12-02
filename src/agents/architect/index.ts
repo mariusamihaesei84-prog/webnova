@@ -36,7 +36,7 @@ export class ArchitectAgent {
     this.aiService = new AIService({
       provider,
       apiKey: config.apiKey,
-      model: config.model || 'gemini-2.5-flash-preview-05-20',
+      model: config.model || 'gemini-2.5-flash',
       defaultTemperature: 0.7,
       defaultMaxTokens: 4096,
     });

@@ -184,38 +184,42 @@ CONTEXT:
 - Beneficii Tehnice: ${technicalBenefit}
 
 TASK:
-Creează un tabel cu 3 coloane și 6-8 rânduri care compară:
+Creează un tabel cu EXACT 3 coloane și 6 rânduri.
 
-COLOANE:
-1. "Agenție Web Generică"
-2. "Webnova" (noi)
-3. "Rezultat pentru Tine"
-
-RÂNDURI (6-8 comparații):
-- Concentrează-te pe features concrete, nu pe promisiuni vagi
-- Arată DIFERENȚA clară în abordare
-- Coloana 3 trebuie să traducă diferența în rezultat business
-
-STILUL:
-- Coloane 1: Problema/lipsa
-- Coloana 2: Soluția noastră specifică
-- Coloana 3: Impactul măsurabil
-
-EXEMPLE BUNE:
-| Agenție Generică | Webnova | Rezultat |
-| Site "frumos" care nu aduce clienți | Site optimizat Core Web Vitals + Schema SEO | Apari în top 3 Google în 90 zile |
-| Template WordPress cu 40 plugin-uri | Cod custom, 0.8s viteză încărcare | Pacienți nu abandonează site-ul |
-
-OUTPUTUL tău trebuie să fie JSON:
+STRUCTURA JSON EXACTĂ (RESPECTĂ ÎNTOCMAI):
 {
   "headers": ["Agenție Web Generică", "Webnova", "Rezultat pentru Tine"],
   "rows": [
-    ["...", "...", "..."],
-    ["...", "...", "..."]
+    ["col1_row1", "col2_row1", "col3_row1"],
+    ["col1_row2", "col2_row2", "col3_row2"],
+    ["col1_row3", "col2_row3", "col3_row3"],
+    ["col1_row4", "col2_row4", "col3_row4"],
+    ["col1_row5", "col2_row5", "col3_row5"],
+    ["col1_row6", "col2_row6", "col3_row6"]
   ]
 }
 
-IMPORTANT: 6-8 rânduri, fiecare cu 3 celule. Fii specific, nu generic.`;
+FIECARE ROW TREBUIE SĂ AIBĂ EXACT 3 STRINGURI!
+
+CONȚINUT COLOANE:
+- Coloana 1 (Agenție Generică): Problema sau lipsa
+- Coloana 2 (Webnova): Soluția noastră specifică
+- Coloana 3 (Rezultat): Impactul măsurabil pentru client
+
+EXEMPLU COMPLET DE OUTPUT VALID:
+{
+  "headers": ["Agenție Web Generică", "Webnova", "Rezultat pentru Tine"],
+  "rows": [
+    ["Site frumos care nu aduce clienți", "Site optimizat Core Web Vitals + Schema SEO", "Apari în top 3 Google în 90 zile"],
+    ["Template WordPress cu 40 plugin-uri", "Cod custom, 0.8s viteză încărcare", "Clienții nu abandonează site-ul"],
+    ["SEO generic fără strategie locală", "Optimizare Google Maps + Local SEO", "Atragi clienți din zona ta geografică"],
+    ["Design pe desktop, mobil secundar", "Mobile-first design optimizat", "70% din vizitatori văd perfect pe telefon"],
+    ["Fără integrare programări", "Sistem programări online integrat", "Clienți noi chiar și când dormi"],
+    ["Suport tehnic inexistent", "Suport dedicat + actualizări lunare", "Site-ul tău funcționează non-stop"]
+  ]
+}
+
+IMPORTANT: Returnează DOAR JSON valid cu EXACT 6 rânduri, fiecare rând cu EXACT 3 stringuri.`;
 }
 
 /**
