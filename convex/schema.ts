@@ -21,7 +21,7 @@ export default defineSchema({
 
   // AI-generated landing pages
   generated_pages: defineTable({
-    niche_id: v.id("niches"), // Reference to niche
+    niche_id: v.optional(v.id("niches")), // Optional reference to niche
     slug: v.string(), // e.g., "solutii/site-pentru-dentisti"
     title: v.string(), // H1 title for SEO
     meta_description: v.string(), // Meta description for SEO
