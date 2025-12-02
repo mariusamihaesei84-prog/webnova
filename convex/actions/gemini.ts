@@ -52,7 +52,7 @@ export const generateLandingPage = action({
     nicheSlug: v.string(), // e.g., "medic-stomatolog"
     nicheId: v.optional(v.id("niches")), // Optional: if provided, saves the page
   },
-  handler: async (ctx, args): Promise<GeneratedLandingPageContent> => {
+  handler: async (ctx, args): Promise<{ pageId: string; content: GeneratedLandingPageContent }> => {
     const apiKey = process.env.GOOGLE_GEMINI_API_KEY;
 
     if (!apiKey) {
@@ -85,15 +85,18 @@ export const generateLandingPage = action({
       // Validate that all required fields are present
       validateGeneratedContent(generatedContent);
 
-      // If nicheId is provided, save the page
-      if (args.nicheId) {
-        await ctx.runMutation(internal.mutations.admin.createPageFromContent, {
-          nicheId: args.nicheId,
-          content: generatedContent,
-        });
-      }
+      // Save the generated page to the database
+      const pageId = await ctx.runMutation(internal.mutations.pages.saveGeneratedPage, {
+        nicheId: args.nicheId,
+        nicheSlug: args.nicheSlug,
+        content: generatedContent,
+      });
 
-      return generatedContent;
+      // Return both the page ID and the content for immediate use
+      return {
+        pageId: pageId as string,
+        content: generatedContent,
+      };
     } catch (error) {
       console.error("Error generating landing page:", error);
       throw new Error(`Failed to generate landing page: ${error instanceof Error ? error.message : 'Unknown error'}`);

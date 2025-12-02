@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { mutation } from "../_generated/server";
+import { internalMutation, mutation } from "../_generated/server";
 
 /**
  * Mutations for managing generated pages
@@ -116,3 +116,39 @@ export const deletePage = mutation({
         await ctx.db.delete(args.id);
     },
 });
+
+/**
+ * Internal mutation to save AI-generated page content
+ * Called automatically by the generateLandingPage action
+ */
+export const saveGeneratedPage = internalMutation({
+    args: {
+        nicheId: v.optional(v.id("niches")),
+        nicheSlug: v.string(),
+        content: v.any(), // GeneratedLandingPageContent
+    },
+    handler: async (ctx, args) => {
+        const now = Date.now();
+
+        // Extract title and meta description from content
+        const title = args.content.seo.title;
+        const metaDescription = args.content.seo.description;
+
+        // Create the page entry
+        const pageId = await ctx.db.insert("generated_pages", {
+            niche_id: args.nicheId,
+            slug: args.nicheSlug,
+            title: title,
+            meta_description: metaDescription,
+            content_json: args.content,
+            status: "published", // Auto-publish AI-generated pages
+            indexing_status: "pending",
+            aio_score: 95, // High AIO score for AI-generated content
+            created_at: now,
+            updated_at: now,
+        });
+
+        return pageId;
+    },
+});
+
