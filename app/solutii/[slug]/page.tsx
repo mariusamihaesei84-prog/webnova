@@ -34,7 +34,7 @@ export default function LandingPage({ params }: PageProps) {
     }
 
     // Not found
-    if (!page || !page.niche) {
+    if (!page) {
         return (
             <div className="flex min-h-screen items-center justify-center bg-white">
                 <div className="text-center">
