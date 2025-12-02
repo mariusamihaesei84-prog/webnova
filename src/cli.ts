@@ -12,6 +12,7 @@
 
 import { WebnovaPipeline, PipelineConfig, PipelineEvent } from './pipeline';
 import { NicheInput } from './agents/architect/types';
+import { ConvexPublisher } from './services/convex-publisher';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -91,11 +92,15 @@ ${colors.bright}OPTIONS:${colors.reset}
   --output, -o    Output directory (default: ./output)
   --url, -u       URL to analyze (for feedback command)
   --mock          Run in mock mode (no AI API calls)
+  --publish, -p   Publish to Convex (live on webnova.ro)
   --config, -c    Path to config JSON file
 
 ${colors.bright}EXAMPLES:${colors.reset}
   ${colors.dim}# Generate a single page${colors.reset}
   webnova generate --niche "cabinet stomatologic"
+
+  ${colors.dim}# Generate and publish to webnova.ro${colors.reset}
+  webnova generate --niche "cabinet stomatologic" --publish
 
   ${colors.dim}# Generate pages from a JSON file${colors.reset}
   webnova batch --input niches.json --output ./pages
@@ -139,6 +144,7 @@ function parseArgs(args: string[]): {
         o: 'output',
         u: 'url',
         c: 'config',
+        p: 'publish',
       };
 
       const fullKey = keyMap[key] || key;
@@ -291,6 +297,20 @@ async function commandGenerate(options: Record<string, string | boolean>): Promi
 
   if (result.success) {
     logInfo(`\nOpen in browser: file://${path.resolve(result.outputPath!)}`);
+
+    // Publish to Convex if --publish flag is set
+    if (options.publish && result.page) {
+      logPhase('Publishing to Convex...');
+      const publisher = new ConvexPublisher();
+      const publishResult = await publisher.publish(result.page);
+
+      if (publishResult.success) {
+        logSuccess(`Published to Convex!`);
+        logInfo(`Live URL: ${publishResult.url}`);
+      } else {
+        logError(`Failed to publish: ${publishResult.error}`);
+      }
+    }
   } else {
     process.exit(1);
   }

@@ -247,8 +247,15 @@ export class AIService {
   parseJSON<T>(content: string): T {
     try {
       const jsonMatch = content.match(/```json\s*([\s\S]*?)\s*```/) || content.match(/```\s*([\s\S]*?)\s*```/);
-      const jsonString = jsonMatch ? jsonMatch[1] : content;
-      return JSON.parse(jsonString.trim());
+      let jsonString = jsonMatch ? jsonMatch[1] : content;
+
+      // Normalize curly quotes to straight quotes (common AI output issue)
+      jsonString = jsonString
+        .replace(/[\u201C\u201D\u201E\u201F\u2033\u2036]/g, '"')  // Double curly quotes
+        .replace(/[\u2018\u2019\u201A\u201B\u2032\u2035]/g, "'")  // Single curly quotes
+        .trim();
+
+      return JSON.parse(jsonString);
     } catch (error) {
       throw new Error(`Failed to parse AI response as JSON: ${error}\n\nContent: ${content}`);
     }
