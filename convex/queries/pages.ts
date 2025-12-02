@@ -22,8 +22,8 @@ export const getPageBySlug = query({
             return null;
         }
 
-        // Also fetch the associated niche
-        const niche = await ctx.db.get(page.niche_id);
+        // Fetch the associated niche (if it exists)
+        const niche = page.niche_id ? await ctx.db.get(page.niche_id) : null;
 
         return {
             ...page,
