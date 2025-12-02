@@ -17,7 +17,7 @@ interface PageProps {
 export default function LandingPage({ params }: PageProps) {
     const { slug } = use(params);
 
-    const page = useQuery(api.queries.pages.getPageBySlug, {
+    const page = useQuery(api.pages.getPageBySlug, {
         slug: `solutii/${slug}`,
     });
 
