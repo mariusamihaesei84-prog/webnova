@@ -43,8 +43,9 @@ export const generateLandingPage = action({
       const result = await model.generateContent(systemPrompt);
       const jsonContent = JSON.parse(result.response.text());
 
-      // Generam slug simplu
-      const slug = args.nicheSlug || ("solutii/" + args.nicheName.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
+      // Generam slug simplu (fara prefix solutii/)
+      let slug = args.nicheSlug || args.nicheName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
 
       // SALVAREA OBLIGATORIE
       await ctx.runMutation((internal as any).pages.saveGeneratedPage, {
