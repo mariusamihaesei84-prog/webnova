@@ -17,8 +17,8 @@ export interface PipelineConfig {
   siteName: string;
   outputDir: string;
 
-  // AI configuration
-  aiProvider: 'openai' | 'anthropic' | 'mock';
+  // AI configuration (Google Gemini)
+  aiProvider: 'gemini' | 'mock';
   aiModel?: string;
   aiApiKey?: string;
 

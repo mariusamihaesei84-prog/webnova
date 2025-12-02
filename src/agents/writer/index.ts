@@ -36,12 +36,12 @@ export class WriterAgent {
       ...config,
     };
 
-    // Initialize AI service
-    const provider = config.mockMode ? 'mock' : 'anthropic';
+    // Initialize AI service (Google Gemini)
+    const provider = config.mockMode ? 'mock' : 'gemini';
     this.aiService = new AIService({
       provider,
       apiKey: config.apiKey,
-      model: config.model || 'claude-3-5-sonnet-20241022',
+      model: config.model || 'gemini-2.5-flash-preview-05-20',
       defaultTemperature: 0.7,
       defaultMaxTokens: 4096,
     });

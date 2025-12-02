@@ -180,13 +180,9 @@ function loadConfig(configPath?: string): Partial<PipelineConfig> {
   }
 
   // Check for environment variables
-  if (process.env.OPENAI_API_KEY) {
-    defaultConfig.aiProvider = 'openai';
-    defaultConfig.aiApiKey = process.env.OPENAI_API_KEY;
-    defaultConfig.mockMode = false;
-  } else if (process.env.ANTHROPIC_API_KEY) {
-    defaultConfig.aiProvider = 'anthropic';
-    defaultConfig.aiApiKey = process.env.ANTHROPIC_API_KEY;
+  if (process.env.GOOGLE_GEMINI_API_KEY) {
+    defaultConfig.aiProvider = 'gemini';
+    defaultConfig.aiApiKey = process.env.GOOGLE_GEMINI_API_KEY;
     defaultConfig.mockMode = false;
   }
 
