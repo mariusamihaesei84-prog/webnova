@@ -1,6 +1,7 @@
-import { mutation } from "../_generated/server";
+import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
+// Mutația pentru salvare
 export const saveGeneratedPage = mutation({
     args: {
         slug: v.string(),
@@ -8,7 +9,6 @@ export const saveGeneratedPage = mutation({
         content: v.any(),
     },
     handler: async (ctx, args) => {
-        // Verificam daca pagina exista
         const existing = await ctx.db
             .query("generated_pages")
             .withIndex("by_slug", (q) => q.eq("slug", args.slug))
@@ -23,7 +23,7 @@ export const saveGeneratedPage = mutation({
         } else {
             await ctx.db.insert("generated_pages", {
                 slug: args.slug,
-                niche_id: undefined, // Optional momentan
+                niche_id: undefined,
                 title: args.content.seo_title || "Titlu Generat",
                 meta_description: args.content.seo_desc || "",
                 content_json: args.content,
@@ -33,5 +33,16 @@ export const saveGeneratedPage = mutation({
                 created_at: Date.now(),
             });
         }
+    },
+});
+
+// Query pentru frontend (necesar pentru afisare)
+export const getPageBySlug = query({
+    args: { slug: v.string() },
+    handler: async (ctx, args) => {
+        return await ctx.db
+            .query("generated_pages")
+            .withIndex("by_slug", (q) => q.eq("slug", args.slug))
+            .first();
     },
 });
