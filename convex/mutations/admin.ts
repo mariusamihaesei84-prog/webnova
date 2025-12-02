@@ -36,7 +36,6 @@ export const generatePageForNiche = internalMutation({
             {
                 nicheName: niche.name,
                 nicheSlug: niche.slug,
-                nicheId: niche._id,
             }
         );
 

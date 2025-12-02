@@ -31,8 +31,26 @@ export const saveGeneratedPage = mutation({
                 indexing_status: "pending",
                 aio_score: 85,
                 created_at: Date.now(),
+                updated_at: Date.now(),
             });
         }
+    },
+});
+
+export const updateIndexingStatus = mutation({
+    args: {
+        id: v.id("generated_pages"),
+        indexing_status: v.union(
+            v.literal("pending"),
+            v.literal("submitted"),
+            v.literal("indexed")
+        ),
+    },
+    handler: async (ctx, args) => {
+        await ctx.db.patch(args.id, {
+            indexing_status: args.indexing_status,
+            updated_at: Date.now(),
+        });
     },
 });
 

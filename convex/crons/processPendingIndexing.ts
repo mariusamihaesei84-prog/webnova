@@ -35,7 +35,7 @@ export const processPendingIndexing = internalAction({
                 if (result.success) {
                     // Update page indexing status to submitted
                     await ctx.runMutation(
-                        api.mutations.pages.updateIndexingStatus,
+                        api.pages.updateIndexingStatus,
                         {
                             id: page._id,
                             indexing_status: "submitted",

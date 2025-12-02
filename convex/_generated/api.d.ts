@@ -15,7 +15,7 @@ import type * as crons_processPendingIndexing from "../crons/processPendingIndex
 import type * as mutations_admin from "../mutations/admin.js";
 import type * as mutations_indexing from "../mutations/indexing.js";
 import type * as mutations_init from "../mutations/init.js";
-import type * as mutations_pages from "../mutations/pages.js";
+import type * as pages from "../pages.js";
 import type * as queries_pages from "../queries/pages.js";
 
 import type {
@@ -32,7 +32,7 @@ declare const fullApi: ApiFromModules<{
   "mutations/admin": typeof mutations_admin;
   "mutations/indexing": typeof mutations_indexing;
   "mutations/init": typeof mutations_init;
-  "mutations/pages": typeof mutations_pages;
+  pages: typeof pages;
   "queries/pages": typeof queries_pages;
 }>;
 
